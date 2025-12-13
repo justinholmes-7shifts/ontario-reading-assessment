@@ -14,8 +14,56 @@
     <div class="writing-prompt">{{ prompt.prompt }}</div>
 </div>
 
+<!-- Think First Planning Framework -->
+<div class="card" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-left: 4px solid #1a5f7a;">
+    <h3 style="color: #1a5f7a;">Think First: Plan Before You Write</h3>
+    <p style="margin-bottom: 16px; color: #666;">Great writers plan their thinking before they start writing. Work through these steps:</p>
+
+    <div class="think-first-steps">
+        <div class="think-step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h4>Understand the Situation</h4>
+                <p>What's happening? What background does your reader need to know?</p>
+            </div>
+        </div>
+
+        <div class="think-step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h4>Identify the Challenge</h4>
+                <p>What's the problem, tension, or interesting question here?</p>
+            </div>
+        </div>
+
+        <div class="think-step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h4>Focus Your Message</h4>
+                <p><strong>If you could only tell your reader ONE thing, what would it be?</strong> Write this first!</p>
+            </div>
+        </div>
+
+        <div class="think-step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+                <h4>Build Your Support</h4>
+                <p>What are 2-4 <em>different</em> reasons or points that support your main message? (Make sure they don't overlap!)</p>
+            </div>
+        </div>
+
+        <div class="think-step">
+            <div class="step-number">5</div>
+            <div class="step-content">
+                <h4>Check Your Logic</h4>
+                <p>Does each supporting point answer 'why?' or 'how?' about your main message?</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="planning-questions">
-    <h4>Planning Questions</h4>
+    <h4>Planning Questions for This Prompt</h4>
     <p>Before you write, think about:</p>
     <ul>
         {% for question in prompt.planning_questions %}
@@ -23,6 +71,17 @@
         {% endfor %}
     </ul>
 </div>
+
+{% if prompt.structure_tips %}
+<div class="card" style="background-color: #fff9f0; border-left: 4px solid #c38154;">
+    <h4 style="color: #c38154;">Structure Tips</h4>
+    <ul style="margin-left: 20px; margin-top: 12px;">
+        {% for tip in prompt.structure_tips %}
+        <li>{{ tip }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
 
 <div class="success-criteria">
     <h4>Success Criteria</h4>
@@ -39,11 +98,12 @@
 
     <div class="card">
         <h3>Your Response</h3>
+        <p style="color: #666; margin-bottom: 12px;"><strong>Remember:</strong> Start with your main point. Then support it with distinct reasons that each answer 'why?' or 'how?'</p>
         <textarea
             class="writing-area"
             name="response"
             id="response"
-            placeholder="Start writing here..."
+            placeholder="Start with your main message..."
             required
         ></textarea>
         <div class="word-count" id="word-count">
@@ -55,6 +115,49 @@
 </form>
 
 <div id="results-container" style="display: none;"></div>
+
+<style>
+.think-first-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.think-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.step-number {
+    width: 32px;
+    height: 32px;
+    background: #1a5f7a;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.step-content h4 {
+    margin: 0 0 4px 0;
+    color: #1a5f7a;
+    font-size: 1rem;
+}
+
+.step-content p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+</style>
 {% endblock %}
 
 {% block scripts %}
@@ -108,6 +211,9 @@ document.getElementById('writing-form').addEventListener('submit', async functio
 
 function displayResults(results, studentResponse) {
     document.getElementById('writing-form').style.display = 'none';
+    document.querySelector('.think-first-steps')?.closest('.card')?.remove();
+    document.querySelector('.planning-questions')?.remove();
+    document.querySelector('.success-criteria')?.remove();
 
     const container = document.getElementById('results-container');
     container.style.display = 'block';
@@ -160,6 +266,20 @@ function displayResults(results, studentResponse) {
         html += '</div>';
     }
 
+    // Structure Check Questions
+    if (results.structure_check_questions) {
+        html += `
+            <div class="card" style="background-color: #f0f7fa; border-left: 4px solid #1a5f7a;">
+                <h3 style="color: #1a5f7a;">Check Your Structure</h3>
+                <p>Review your writing with these questions:</p>
+                <ul style="margin-left: 20px; margin-top: 12px;">
+        `;
+        for (const q of results.structure_check_questions) {
+            html += `<li>${q}</li>`;
+        }
+        html += '</ul></div>';
+    }
+
     // Rubric
     html += `
         <div class="card">
@@ -179,7 +299,7 @@ function displayResults(results, studentResponse) {
     for (const cat of results.rubric.categories) {
         html += `
             <tr>
-                <td><strong>${cat.name}</strong></td>
+                <td><strong>${cat.name}</strong><br><small>${cat.description || ''}</small></td>
                 <td>${cat.weight}</td>
                 <td>${cat.levels['Level 4 (80-100%)']}</td>
                 <td>${cat.levels['Level 3 (70-79%)']}</td>
@@ -206,7 +326,7 @@ function displayResults(results, studentResponse) {
     html += `
         <div class="card">
             <h3>Your Writing</h3>
-            <div class="passage-container">${studentResponse}</div>
+            <div class="passage-container">${studentResponse.replace(/\n/g, '<br>')}</div>
         </div>
     `;
 
