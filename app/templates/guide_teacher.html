@@ -1,0 +1,430 @@
+{% extends "base.html" %}
+
+{% block title %}Teacher Assessment Guide - Ontario Reading & Writing Assessment{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Teacher Assessment Guide</h2>
+    <p>Detailed rubrics and assessment criteria for evaluating student work in reading and writing assessments.</p>
+</div>
+
+<div class="card">
+    <h3>Quick Reference: What to Look For</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
+        <div style="background: #f0f7fa; padding: 16px; border-radius: 8px; border-left: 4px solid #1a5f7a;">
+            <h4 style="color: #1a5f7a; margin-top: 0;">Reading Assessment</h4>
+            <ol>
+                <li>Can student identify the ONE main idea?</li>
+                <li>Can student recognize HOW the author builds their argument?</li>
+                <li>Can student evaluate which evidence is strongest?</li>
+                <li>Can student make inferences from implied information?</li>
+            </ol>
+        </div>
+        <div style="background: #fff9f0; padding: 16px; border-radius: 8px; border-left: 4px solid #c38154;">
+            <h4 style="color: #c38154; margin-top: 0;">Writing Assessment</h4>
+            <ol>
+                <li>Is the main message clear in paragraph 1?</li>
+                <li>Does each paragraph answer "why?" or "how?" about the main message?</li>
+                <li>Are points different from each other (no overlap)?</li>
+                <li>Together, do points cover everything important?</li>
+            </ol>
+        </div>
+    </div>
+    <p style="margin-top: 16px; color: #666; font-style: italic;"><strong>The Single Most Important Question:</strong> "Can I follow the student's thinking from start to finish?"</p>
+</div>
+
+<!-- READING ASSESSMENT SECTION -->
+<div class="card" style="background: #f0f7fa;">
+    <h2 style="color: #1a5f7a;">Part 1: Reading Assessment Rubrics</h2>
+</div>
+
+<div class="card">
+    <h3>Reading Skills Being Assessed</h3>
+    <table class="rubric-table">
+        <tr>
+            <th>Skill</th>
+            <th>Description</th>
+            <th>Curriculum Link</th>
+        </tr>
+        <tr>
+            <td><strong>Central Message</strong></td>
+            <td>Identifying the main idea/theme</td>
+            <td>Reading 1.1-1.4</td>
+        </tr>
+        <tr>
+            <td><strong>Text Structure</strong></td>
+            <td>Recognizing how authors organize arguments</td>
+            <td>Reading 1.5</td>
+        </tr>
+        <tr>
+            <td><strong>Evidence Evaluation</strong></td>
+            <td>Assessing strength of supporting details</td>
+            <td>Reading 1.6-1.7</td>
+        </tr>
+        <tr>
+            <td><strong>Inference</strong></td>
+            <td>Drawing conclusions from implicit information</td>
+            <td>Reading 1.4</td>
+        </tr>
+        <tr>
+            <td><strong>Vocabulary</strong></td>
+            <td>Using context clues to determine meaning</td>
+            <td>Reading 1.8</td>
+        </tr>
+        <tr>
+            <td><strong>Critical Literacy</strong></td>
+            <td>Analyzing perspective, bias, and credibility</td>
+            <td>Reading 1.5-1.7</td>
+        </tr>
+    </table>
+</div>
+
+<div class="card">
+    <h3>Reading Rubric by Question Type</h3>
+
+    <h4 style="color: #1a5f7a;">Central Message Questions</h4>
+    <p><em>"What is the main theme/central message of this passage?"</em></p>
+    <table class="rubric-table">
+        <tr>
+            <th>Level</th>
+            <th>Criteria</th>
+        </tr>
+        <tr>
+            <td><strong>4</strong></td>
+            <td>Correctly identifies overarching theme; understands how details support main idea; distinguishes main idea from supporting details</td>
+        </tr>
+        <tr>
+            <td><strong>3</strong></td>
+            <td>Correctly identifies main theme; understands general relationship to supporting ideas</td>
+        </tr>
+        <tr>
+            <td><strong>2</strong></td>
+            <td>Identifies a theme but may confuse it with a supporting detail or secondary idea</td>
+        </tr>
+        <tr>
+            <td><strong>1</strong></td>
+            <td>Unable to identify main theme; focuses on minor details or misunderstands passage</td>
+        </tr>
+    </table>
+
+    <h4 style="color: #1a5f7a; margin-top: 24px;">Evidence Evaluation Questions</h4>
+    <p><em>"Which detail BEST supports the claim that...?"</em></p>
+    <table class="rubric-table">
+        <tr>
+            <th>Level</th>
+            <th>Criteria</th>
+        </tr>
+        <tr>
+            <td><strong>4</strong></td>
+            <td>Selects strongest evidence; can articulate WHY it's stronger than alternatives</td>
+        </tr>
+        <tr>
+            <td><strong>3</strong></td>
+            <td>Selects appropriate evidence; understands connection to claim</td>
+        </tr>
+        <tr>
+            <td><strong>2</strong></td>
+            <td>Selects evidence that partially supports the claim or selects weaker over stronger options</td>
+        </tr>
+        <tr>
+            <td><strong>1</strong></td>
+            <td>Selects evidence that doesn't support the claim or misunderstands the relationship</td>
+        </tr>
+    </table>
+
+    <h4 style="color: #1a5f7a; margin-top: 24px;">Inference Questions</h4>
+    <p><em>"What can you infer about...?"</em></p>
+    <table class="rubric-table">
+        <tr>
+            <th>Level</th>
+            <th>Criteria</th>
+        </tr>
+        <tr>
+            <td><strong>4</strong></td>
+            <td>Makes sophisticated inferences supported by multiple textual clues; can explain reasoning</td>
+        </tr>
+        <tr>
+            <td><strong>3</strong></td>
+            <td>Makes reasonable inferences supported by text; understands implicit meaning</td>
+        </tr>
+        <tr>
+            <td><strong>2</strong></td>
+            <td>Makes inferences but may over-interpret or under-support with textual evidence</td>
+        </tr>
+        <tr>
+            <td><strong>1</strong></td>
+            <td>Unable to make inferences; sticks only to explicit statements or makes unsupported guesses</td>
+        </tr>
+    </table>
+</div>
+
+<!-- WRITING ASSESSMENT SECTION -->
+<div class="card" style="background: #fff9f0;">
+    <h2 style="color: #c38154;">Part 2: Writing Assessment Rubrics</h2>
+</div>
+
+<div class="card">
+    <h3>Writing Assessment Categories (25% each)</h3>
+
+    <h4 style="color: #1a5f7a;">1. Main Message & Focus</h4>
+    <p><em>Question: Is the main point clear from the start?</em></p>
+    <table class="rubric-table">
+        <tr>
+            <th>Level</th>
+            <th>Score</th>
+            <th>Criteria</th>
+            <th>Look For</th>
+        </tr>
+        <tr>
+            <td><strong>4</strong></td>
+            <td>80-100%</td>
+            <td>Main message is crystal clear from opening; reader immediately understands the point</td>
+            <td>Main point in para 1, specific not vague, no guessing required</td>
+        </tr>
+        <tr>
+            <td><strong>3</strong></td>
+            <td>70-79%</td>
+            <td>Main message is clear and stated early in the writing</td>
+            <td>Main point clearly present, stated in introduction, mostly specific</td>
+        </tr>
+        <tr>
+            <td><strong>2</strong></td>
+            <td>60-69%</td>
+            <td>Main message is present but may be buried or unclear</td>
+            <td>Main point exists, may be in middle/end, somewhat vague</td>
+        </tr>
+        <tr>
+            <td><strong>1</strong></td>
+            <td>50-59%</td>
+            <td>Main message is missing or very difficult to identify</td>
+            <td>No clear main point, multiple competing ideas, reader confused</td>
+        </tr>
+    </table>
+
+    <h4 style="color: #1a5f7a; margin-top: 24px;">2. Logical Structure</h4>
+    <p><em>Question: Do supporting points clearly connect to the main message?</em></p>
+    <table class="rubric-table">
+        <tr>
+            <th>Level</th>
+            <th>Score</th>
+            <th>Criteria</th>
+            <th>Look For</th>
+        </tr>
+        <tr>
+            <td><strong>4</strong></td>
+            <td>80-100%</td>
+            <td>Each paragraph directly answers 'why?' or 'how?' about the main message</td>
+            <td>Clear paragraph purposes, logical flow, strong transitions</td>
+        </tr>
+        <tr>
+            <td><strong>3</strong></td>
+            <td>70-79%</td>
+            <td>Supporting points connect to main message with clear logic</td>
+            <td>Mostly clear connections, good organization, minor gaps</td>
+        </tr>
+        <tr>
+            <td><strong>2</strong></td>
+            <td>60-69%</td>
+            <td>Some connection between points and main message, but logic unclear</td>
+            <td>Some connections present, logic gaps, unclear transitions</td>
+        </tr>
+        <tr>
+            <td><strong>1</strong></td>
+            <td>50-59%</td>
+            <td>Points seem disconnected or don't clearly support the main message</td>
+            <td>Unclear connections, random organization, reader gets lost</td>
+        </tr>
+    </table>
+
+    <h4 style="color: #1a5f7a; margin-top: 24px;">3. Grouping & Completeness</h4>
+    <p><em>Question: Are ideas organized without overlap? Do they cover everything important?</em></p>
+    <table class="rubric-table">
+        <tr>
+            <th>Level</th>
+            <th>Score</th>
+            <th>Criteria</th>
+            <th>Look For</th>
+        </tr>
+        <tr>
+            <td><strong>4</strong></td>
+            <td>80-100%</td>
+            <td>Ideas perfectly grouped; no overlap between points; nothing important missing</td>
+            <td>Each point distinct, no repetition, comprehensive coverage</td>
+        </tr>
+        <tr>
+            <td><strong>3</strong></td>
+            <td>70-79%</td>
+            <td>Ideas well-grouped with minimal overlap; covers main points</td>
+            <td>Mostly distinct points, minor overlap, covers key points</td>
+        </tr>
+        <tr>
+            <td><strong>2</strong></td>
+            <td>60-69%</td>
+            <td>Some grouping but ideas may overlap or important points missing</td>
+            <td>Some overlap, missing arguments, partial coverage</td>
+        </tr>
+        <tr>
+            <td><strong>1</strong></td>
+            <td>50-59%</td>
+            <td>Ideas jumbled, repetitive, or major points missing</td>
+            <td>Significant repetition, major gaps, poor grouping</td>
+        </tr>
+    </table>
+
+    <h4 style="color: #1a5f7a; margin-top: 24px;">4. Conventions & Clarity</h4>
+    <p><em>Question: Is the writing clear and error-free?</em></p>
+    <table class="rubric-table">
+        <tr>
+            <th>Level</th>
+            <th>Score</th>
+            <th>Criteria</th>
+            <th>Look For</th>
+        </tr>
+        <tr>
+            <td><strong>4</strong></td>
+            <td>80-100%</td>
+            <td>Virtually no errors; writing is exceptionally clear</td>
+            <td>Error-free, excellent flow, varied sentences</td>
+        </tr>
+        <tr>
+            <td><strong>3</strong></td>
+            <td>70-79%</td>
+            <td>Few errors that don't impede understanding</td>
+            <td>Minor errors, clear expression, good variety</td>
+        </tr>
+        <tr>
+            <td><strong>2</strong></td>
+            <td>60-69%</td>
+            <td>Some errors that may impede understanding</td>
+            <td>Noticeable errors, some confusion, repetitive</td>
+        </tr>
+        <tr>
+            <td><strong>1</strong></td>
+            <td>50-59%</td>
+            <td>Frequent errors that significantly impede understanding</td>
+            <td>Many errors, hard to understand, basic vocabulary</td>
+        </tr>
+    </table>
+</div>
+
+<div class="card">
+    <h3>Quick Assessment Checklist</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+        <div style="background: #f5f5f5; padding: 16px; border-radius: 8px;">
+            <h4 style="margin-top: 0;">Main Message & Focus</h4>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                <li>☐ Main point present? Where?</li>
+                <li>☐ Specific or vague?</li>
+                <li>☐ Reader must guess?</li>
+            </ul>
+        </div>
+        <div style="background: #f5f5f5; padding: 16px; border-radius: 8px;">
+            <h4 style="margin-top: 0;">Logical Structure</h4>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                <li>☐ Each paragraph = ONE purpose?</li>
+                <li>☐ Points answer "why/how"?</li>
+                <li>☐ Clear transitions?</li>
+            </ul>
+        </div>
+        <div style="background: #f5f5f5; padding: 16px; border-radius: 8px;">
+            <h4 style="margin-top: 0;">Grouping & Completeness</h4>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                <li>☐ Points are different?</li>
+                <li>☐ Any overlap/repetition?</li>
+                <li>☐ Missing anything obvious?</li>
+            </ul>
+        </div>
+        <div style="background: #f5f5f5; padding: 16px; border-radius: 8px;">
+            <h4 style="margin-top: 0;">Conventions</h4>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                <li>☐ Spelling/grammar errors?</li>
+                <li>☐ Sentence variety?</li>
+                <li>☐ Word count met?</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Sample Feedback Templates</h3>
+
+    <div style="background: #e8f5e9; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+        <h4 style="color: #4caf50; margin-top: 0;">Level 4 Feedback</h4>
+        <p style="margin-bottom: 0;">"Your main message is crystal clear from the start, and each paragraph directly supports it with distinct, non-overlapping reasons. Excellent logical structure!"</p>
+    </div>
+
+    <div style="background: #e3f2fd; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+        <h4 style="color: #1976d2; margin-top: 0;">Level 3 Feedback</h4>
+        <p style="margin-bottom: 0;">"Good clear thesis. Your points support your main message well. Try moving your thesis earlier and making your transitions more explicit to strengthen your structure."</p>
+    </div>
+
+    <div style="background: #fff3e0; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+        <h4 style="color: #f57c00; margin-top: 0;">Level 2 Feedback</h4>
+        <p style="margin-bottom: 0;">"I found your main point in paragraph 3—move it to paragraph 1. Also, points 2 and 3 overlap (they're both about [X]). How can you make them truly different?"</p>
+    </div>
+
+    <div style="background: #ffebee; padding: 16px; border-radius: 8px;">
+        <h4 style="color: #c62828; margin-top: 0;">Level 1 Feedback</h4>
+        <p style="margin-bottom: 0;">"I'm not sure what your main message is. Try completing this sentence: 'The ONE thing I want my reader to understand is...' Then make sure every paragraph supports that one thing."</p>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Red Flags to Watch For</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
+        <div style="background: #ffebee; padding: 16px; border-radius: 8px;">
+            <h4 style="color: #c62828; margin-top: 0;">Reading Red Flags</h4>
+            <ul>
+                <li><strong>Consistently misidentifies main ideas</strong> → Focus on distinguishing detail from theme</li>
+                <li><strong>Can't use context clues</strong> → Vocabulary instruction needed</li>
+                <li><strong>Over-interprets or invents</strong> → Focus on text evidence</li>
+            </ul>
+        </div>
+        <div style="background: #ffebee; padding: 16px; border-radius: 8px;">
+            <h4 style="color: #c62828; margin-top: 0;">Writing Red Flags</h4>
+            <ul>
+                <li><strong>Main message buried or missing</strong> → Direct instruction on thesis placement</li>
+                <li><strong>Points repeat same idea</strong> → Teach "different types of arguments"</li>
+                <li><strong>Points don't connect</strong> → Practice "why?" test</li>
+                <li><strong>Writes without planning</strong> → Enforce Think First framework</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Grade Conversion (if required)</h3>
+    <table class="rubric-table">
+        <tr>
+            <th>Achievement Level</th>
+            <th>Percentage</th>
+            <th>Letter Grade</th>
+        </tr>
+        <tr><td>Level 4+</td><td>90-100%</td><td>A</td></tr>
+        <tr><td>Level 4</td><td>80-89%</td><td>B+</td></tr>
+        <tr><td>Level 3+</td><td>75-79%</td><td>B</td></tr>
+        <tr><td>Level 3</td><td>70-74%</td><td>B-</td></tr>
+        <tr><td>Level 2+</td><td>65-69%</td><td>C+</td></tr>
+        <tr><td>Level 2</td><td>60-64%</td><td>C</td></tr>
+        <tr><td>Level 1+</td><td>55-59%</td><td>D</td></tr>
+        <tr><td>Level 1</td><td>50-54%</td><td>D-</td></tr>
+    </table>
+</div>
+
+<div class="card" style="background: #f5f5f5;">
+    <h3>Full Guide Available</h3>
+    <p>The complete Teacher Assessment Guide with additional detail is available as a Markdown file:</p>
+    <p><code>/guides/TEACHER_ASSESSMENT_GUIDE.md</code></p>
+    <p>This includes:</p>
+    <ul>
+        <li>Detailed feedback prompts for each question type</li>
+        <li>Progress tracking recommendations</li>
+        <li>The Feedback Sandwich structure</li>
+        <li>Score calculation examples</li>
+    </ul>
+</div>
+
+<div style="margin-top: 20px;">
+    <a href="{{ url_for('main.guides') }}" class="btn btn-secondary">Back to Guides</a>
+</div>
+{% endblock %}

@@ -61,3 +61,23 @@ def submit_writing():
 @main.route('/results')
 def results():
     return render_template('results.html')
+
+
+@main.route('/guides')
+def guides():
+    return render_template('guides.html')
+
+
+@main.route('/guides/student-reading')
+def student_reading_guide():
+    return render_template('guide_student_reading.html')
+
+
+@main.route('/guides/student-writing')
+def student_writing_guide():
+    return render_template('guide_student_writing.html')
+
+
+@main.route('/guides/teacher')
+def teacher_guide():
+    return render_template('guide_teacher.html')

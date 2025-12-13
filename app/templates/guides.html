@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Guides - Ontario Reading & Writing Assessment{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Guides & Instructions</h2>
+    <p>Resources to help students and teachers get the most out of this assessment tool.</p>
+</div>
+
+<div class="assessment-grid">
+    <div class="assessment-card" onclick="window.location.href='{{ url_for('main.student_reading_guide') }}'">
+        <h3>Student Guide: Reading</h3>
+        <p class="type">For Students</p>
+        <p>Learn how to read critically, identify main ideas, evaluate evidence, and make connections between texts.</p>
+        <div class="meta">
+            <strong>Skills covered:</strong> Central message, text structure, evidence evaluation, inference
+        </div>
+    </div>
+
+    <div class="assessment-card" onclick="window.location.href='{{ url_for('main.student_writing_guide') }}'">
+        <h3>Student Guide: Writing</h3>
+        <p class="type">For Students</p>
+        <p>Master the "Think First" framework to plan your writing and communicate your ideas clearly.</p>
+        <div class="meta">
+            <strong>Skills covered:</strong> Main message focus, logical structure, grouping ideas, conventions
+        </div>
+    </div>
+
+    <div class="assessment-card" onclick="window.location.href='{{ url_for('main.teacher_guide') }}'">
+        <h3>Teacher Assessment Guide</h3>
+        <p class="type">For Teachers</p>
+        <p>Detailed rubrics, assessment criteria, and feedback templates for evaluating student work.</p>
+        <div class="meta">
+            <strong>Includes:</strong> Scoring guides, feedback prompts, tracking recommendations
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Printable Versions</h3>
+    <p>The complete guides are also available as Markdown files in the <code>/guides</code> folder:</p>
+    <ul style="margin-left: 20px; margin-top: 12px;">
+        <li><code>STUDENT_GUIDE_READING.md</code></li>
+        <li><code>STUDENT_GUIDE_WRITING.md</code></li>
+        <li><code>TEACHER_ASSESSMENT_GUIDE.md</code></li>
+    </ul>
+</div>
+{% endblock %}
