@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+
+{% block title %}{{ prompt.title }} - Writing Assessment{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>{{ prompt.title }}</h2>
+    <p class="type">{{ prompt.type }} | Grade {{ prompt.grade }}</p>
+    <p><strong>Word Count:</strong> {{ prompt.word_minimum }}-{{ prompt.word_maximum }} words</p>
+</div>
+
+<div class="card">
+    <h3>Writing Prompt</h3>
+    <div class="writing-prompt">{{ prompt.prompt }}</div>
+</div>
+
+<div class="planning-questions">
+    <h4>Planning Questions</h4>
+    <p>Before you write, think about:</p>
+    <ul>
+        {% for question in prompt.planning_questions %}
+        <li>{{ question }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="success-criteria">
+    <h4>Success Criteria</h4>
+    <p>Your writing should:</p>
+    <ul>
+        {% for criterion in prompt.success_criteria %}
+        <li>{{ criterion }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<form id="writing-form">
+    <input type="hidden" name="prompt_id" value="{{ prompt.id }}">
+
+    <div class="card">
+        <h3>Your Response</h3>
+        <textarea
+            class="writing-area"
+            name="response"
+            id="response"
+            placeholder="Start writing here..."
+            required
+        ></textarea>
+        <div class="word-count" id="word-count">
+            Words: 0 | Target: {{ prompt.word_minimum }}-{{ prompt.word_maximum }}
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit Writing</button>
+</form>
+
+<div id="results-container" style="display: none;"></div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const wordMin = {{ prompt.word_minimum }};
+const wordMax = {{ prompt.word_maximum }};
+const textarea = document.getElementById('response');
+const wordCountDisplay = document.getElementById('word-count');
+
+textarea.addEventListener('input', function() {
+    const text = this.value.trim();
+    const words = text ? text.split(/\s+/).length : 0;
+
+    wordCountDisplay.textContent = `Words: ${words} | Target: ${wordMin}-${wordMax}`;
+
+    wordCountDisplay.classList.remove('warning', 'error', 'success');
+    if (words < wordMin) {
+        wordCountDisplay.classList.add('warning');
+    } else if (words > wordMax) {
+        wordCountDisplay.classList.add('error');
+    } else {
+        wordCountDisplay.classList.add('success');
+    }
+});
+
+document.getElementById('writing-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const response = formData.get('response');
+
+    try {
+        const res = await fetch('/writing/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                prompt_id: formData.get('prompt_id'),
+                response: response
+            })
+        });
+
+        const results = await res.json();
+        displayResults(results, response);
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while submitting your writing.');
+    }
+});
+
+function displayResults(results, studentResponse) {
+    document.getElementById('writing-form').style.display = 'none';
+
+    const container = document.getElementById('results-container');
+    container.style.display = 'block';
+
+    let html = `
+        <div class="card">
+            <h2>Writing Assessment Results</h2>
+            <h3>${results.prompt_title}</h3>
+            <p class="type">${results.prompt_type}</p>
+        </div>
+    `;
+
+    // Text metrics
+    html += `
+        <div class="card">
+            <h3>Text Analysis</h3>
+            <div class="skill-breakdown">
+                <div class="skill-item">
+                    <h4>Word Count</h4>
+                    <div class="percentage">${results.text_metrics.word_count}</div>
+                    <p>Target: ${results.text_metrics.word_minimum}-${results.text_metrics.word_maximum}</p>
+                </div>
+                <div class="skill-item">
+                    <h4>Sentences</h4>
+                    <div class="percentage">${results.text_metrics.sentence_count}</div>
+                </div>
+                <div class="skill-item">
+                    <h4>Paragraphs</h4>
+                    <div class="percentage">${results.text_metrics.paragraph_count}</div>
+                </div>
+                <div class="skill-item">
+                    <h4>Avg. Sentence Length</h4>
+                    <div class="percentage">${results.text_metrics.average_sentence_length}</div>
+                    <p>words</p>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Feedback
+    if (results.feedback_areas.length > 0) {
+        html += '<div class="card"><h3>Feedback</h3>';
+        for (const fb of results.feedback_areas) {
+            html += `
+                <div class="feedback-item needs-improvement">
+                    <strong>${fb.area}:</strong> ${fb.feedback}
+                </div>
+            `;
+        }
+        html += '</div>';
+    }
+
+    // Rubric
+    html += `
+        <div class="card">
+            <h3>Assessment Rubric</h3>
+            <p>Use this rubric for self-assessment or teacher evaluation:</p>
+            <table class="rubric-table">
+                <tr>
+                    <th>Category</th>
+                    <th>Weight</th>
+                    <th>Level 4</th>
+                    <th>Level 3</th>
+                    <th>Level 2</th>
+                    <th>Level 1</th>
+                </tr>
+    `;
+
+    for (const cat of results.rubric.categories) {
+        html += `
+            <tr>
+                <td><strong>${cat.name}</strong></td>
+                <td>${cat.weight}</td>
+                <td>${cat.levels['Level 4 (80-100%)']}</td>
+                <td>${cat.levels['Level 3 (70-79%)']}</td>
+                <td>${cat.levels['Level 2 (60-69%)']}</td>
+                <td>${cat.levels['Level 1 (50-59%)']}</td>
+            </tr>
+        `;
+    }
+    html += '</table></div>';
+
+    // Self-assessment
+    html += `
+        <div class="card">
+            <h3>Self-Assessment Checklist</h3>
+            <p>Review your writing against these questions:</p>
+            <ul style="margin-left: 20px; margin-top: 12px;">
+    `;
+    for (const q of results.self_assessment_questions) {
+        html += `<li>${q}</li>`;
+    }
+    html += '</ul></div>';
+
+    // Student's response
+    html += `
+        <div class="card">
+            <h3>Your Writing</h3>
+            <div class="passage-container">${studentResponse}</div>
+        </div>
+    `;
+
+    html += '<a href="/writing" class="btn btn-secondary">Try Another Prompt</a>';
+
+    container.innerHTML = html;
+    window.scrollTo(0, 0);
+}
+</script>
+{% endblock %}

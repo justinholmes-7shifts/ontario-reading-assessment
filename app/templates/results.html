@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Results - Ontario Reading & Writing Assessment{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Assessment Results</h2>
+    <p>View your assessment history and track your progress.</p>
+</div>
+
+<div class="card">
+    <h3>Coming Soon</h3>
+    <p>This feature will allow you to:</p>
+    <ul style="margin-left: 20px; margin-top: 12px;">
+        <li>View past assessment results</li>
+        <li>Track progress over time</li>
+        <li>See skill development across assessments</li>
+        <li>Download progress reports</li>
+    </ul>
+</div>
+
+<div style="margin-top: 20px;">
+    <a href="{{ url_for('main.reading_assessment') }}" class="btn btn-primary">Take Reading Assessment</a>
+    <a href="{{ url_for('main.writing_assessment') }}" class="btn btn-secondary" style="margin-left: 10px;">Take Writing Assessment</a>
+</div>
+{% endblock %}

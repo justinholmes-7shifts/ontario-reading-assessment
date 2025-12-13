@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Reading Assessment - Ontario Reading & Writing Assessment{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Reading Assessment</h2>
+    <p>Select a passage to begin your reading comprehension assessment. Each assessment includes questions that test various reading skills aligned with the Ontario curriculum.</p>
+</div>
+
+<div class="assessment-grid">
+    {% for passage in passages %}
+    <div class="assessment-card" onclick="window.location.href='{{ url_for('main.reading_test', passage_id=passage.id) }}'">
+        <h3>{{ passage.title }}</h3>
+        <p class="type">{{ passage.type }}</p>
+        <div class="meta">
+            <p><strong>Grade Level:</strong> {{ passage.grade }}</p>
+            <p><strong>Questions:</strong> {{ passage.question_count }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="card">
+    <h3>Reading Skills Assessed</h3>
+    <ul style="margin-left: 20px; margin-top: 12px;">
+        <li><strong>Comprehension:</strong> Understanding main ideas and details</li>
+        <li><strong>Inference:</strong> Reading between the lines</li>
+        <li><strong>Vocabulary:</strong> Using context clues</li>
+        <li><strong>Analysis:</strong> Examining author's craft and purpose</li>
+        <li><strong>Critical Thinking:</strong> Evaluating arguments and evidence</li>
+    </ul>
+</div>
+{% endblock %}

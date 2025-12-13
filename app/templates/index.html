@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Ontario Reading & Writing Assessment{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Welcome to the Ontario Reading & Writing Assessment Tool</h2>
+    <p>This tool is designed for Grade 7-8 students and is aligned with the Ontario Language Curriculum.</p>
+</div>
+
+<div class="assessment-grid">
+    <div class="assessment-card" onclick="window.location.href='{{ url_for('main.reading_assessment') }}'">
+        <h3>Reading Assessment</h3>
+        <p class="type">Comprehension & Analysis</p>
+        <p>Test your reading comprehension skills with passages including fiction, non-fiction, and media texts.</p>
+        <div class="meta">
+            <strong>Skills assessed:</strong> Main idea, inference, vocabulary, critical analysis
+        </div>
+    </div>
+
+    <div class="assessment-card" onclick="window.location.href='{{ url_for('main.writing_assessment') }}'">
+        <h3>Writing Assessment</h3>
+        <p class="type">Composition & Expression</p>
+        <p>Practice your writing skills with prompts for narrative, persuasive, informational, and response writing.</p>
+        <div class="meta">
+            <strong>Skills assessed:</strong> Ideas, organization, voice, conventions
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Ontario Curriculum Alignment</h3>
+    <p>All assessments are designed to align with the Ontario Language Curriculum expectations for Grades 7 and 8, including:</p>
+    <ul style="margin-left: 20px; margin-top: 12px;">
+        <li>Reading for meaning and comprehension strategies</li>
+        <li>Understanding form and style</li>
+        <li>Critical literacy and media analysis</li>
+        <li>Developing and organizing ideas in writing</li>
+        <li>Applying conventions of standard English</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h3>Achievement Levels</h3>
+    <p>Results are reported using Ontario Achievement Chart levels:</p>
+    <ul style="margin-left: 20px; margin-top: 12px;">
+        <li><strong>Level 4 (80-100%):</strong> Exceeds provincial standard</li>
+        <li><strong>Level 3 (70-79%):</strong> Meets provincial standard</li>
+        <li><strong>Level 2 (60-69%):</strong> Approaching provincial standard</li>
+        <li><strong>Level 1 (50-59%):</strong> Below provincial standard</li>
+    </ul>
+</div>
+{% endblock %}

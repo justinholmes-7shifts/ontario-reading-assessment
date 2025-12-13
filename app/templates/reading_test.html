@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}{{ passage.title }} - Reading Assessment{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>{{ passage.title }}</h2>
+    <p class="type">{{ passage.type }} | Grade {{ passage.grade }}</p>
+</div>
+
+<div class="card">
+    <h3>Read the passage carefully:</h3>
+    <div class="passage-container">{{ passage.text }}</div>
+</div>
+
+<form id="reading-form">
+    <input type="hidden" name="passage_id" value="{{ passage.id }}">
+
+    {% for question in passage.questions %}
+    <div class="question" id="question-{{ question.id }}">
+        <div>
+            <span class="question-number">{{ loop.index }}</span>
+            <span class="skill-tag">{{ question.skill }}</span>
+        </div>
+        <p class="question-text">{{ question.question }}</p>
+        <ul class="options">
+            {% for option in question.options %}
+            <li>
+                <label>
+                    <input type="radio" name="{{ question.id }}" value="{{ loop.index0 }}" required>
+                    <span>{{ option }}</span>
+                </label>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary">Submit Answers</button>
+</form>
+
+<div id="results-container" style="display: none;"></div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('reading-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const answers = {};
+
+    for (let [key, value] of formData.entries()) {
+        if (key !== 'passage_id') {
+            answers[key] = parseInt(value);
+        }
+    }
+
+    try {
+        const response = await fetch('/reading/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                passage_id: formData.get('passage_id'),
+                answers: answers
+            })
+        });
+
+        const results = await response.json();
+        displayResults(results);
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while submitting your answers.');
+    }
+});
+
+function displayResults(results) {
+    document.getElementById('reading-form').style.display = 'none';
+
+    const container = document.getElementById('results-container');
+    container.style.display = 'block';
+
+    let html = `
+        <div class="results-summary">
+            <h2>Your Results</h2>
+            <div class="score-display">${results.score_percentage}%</div>
+            <div class="achievement-level">${results.achievement_level}</div>
+            <p>${results.correct_count} out of ${results.total_questions} correct</p>
+        </div>
+    `;
+
+    // Skill breakdown
+    html += '<div class="card"><h3>Skill Breakdown</h3><div class="skill-breakdown">';
+    for (const [skill, data] of Object.entries(results.skill_breakdown)) {
+        html += `
+            <div class="skill-item">
+                <h4>${skill}</h4>
+                <div class="percentage">${data.percentage}%</div>
+                <p>${data.correct}/${data.total}</p>
+            </div>
+        `;
+    }
+    html += '</div></div>';
+
+    // Feedback
+    if (results.curriculum_feedback.length > 0) {
+        html += '<div class="card"><h3>Feedback</h3>';
+        for (const feedback of results.curriculum_feedback) {
+            const feedbackClass = feedback.status === 'strength' ? 'strength' : 'needs-improvement';
+            html += `<div class="feedback-item ${feedbackClass}">${feedback.message}</div>`;
+        }
+        html += '</div>';
+    }
+
+    // Question results
+    html += '<div class="card"><h3>Question Review</h3>';
+    for (const qr of results.question_results) {
+        const resultClass = qr.correct ? 'result-correct' : 'result-incorrect';
+        const icon = qr.correct ? '✓' : '✗';
+        html += `
+            <div class="question ${resultClass}">
+                <p><strong>${icon} ${qr.question}</strong></p>
+                <p>Skill: ${qr.skill}</p>
+                ${!qr.correct ? `<div class="explanation"><strong>Explanation:</strong> ${qr.explanation}</div>` : ''}
+            </div>
+        `;
+    }
+    html += '</div>';
+
+    html += '<a href="/reading" class="btn btn-secondary">Try Another Passage</a>';
+
+    container.innerHTML = html;
+    window.scrollTo(0, 0);
+}
+</script>
+{% endblock %}

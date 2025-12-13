@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Writing Assessment - Ontario Reading & Writing Assessment{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Writing Assessment</h2>
+    <p>Select a writing prompt to begin. Each prompt includes planning questions, success criteria, and a rubric aligned with Ontario curriculum expectations.</p>
+</div>
+
+<div class="assessment-grid">
+    {% for prompt in prompts %}
+    <div class="assessment-card" onclick="window.location.href='{{ url_for('main.writing_test', prompt_id=prompt.id) }}'">
+        <h3>{{ prompt.title }}</h3>
+        <p class="type">{{ prompt.type }}</p>
+        <div class="meta">
+            <p><strong>Grade Level:</strong> {{ prompt.grade }}</p>
+            <p><strong>Word Count:</strong> {{ prompt.word_minimum }}-{{ prompt.word_maximum }} words</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="card">
+    <h3>Writing Categories Assessed</h3>
+    <ul style="margin-left: 20px; margin-top: 12px;">
+        <li><strong>Ideas and Content (25%):</strong> Development and depth of ideas</li>
+        <li><strong>Organization (25%):</strong> Structure, flow, and transitions</li>
+        <li><strong>Voice and Style (25%):</strong> Word choice and sentence variety</li>
+        <li><strong>Conventions (25%):</strong> Spelling, grammar, and punctuation</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h3>Writing Types</h3>
+    <ul style="margin-left: 20px; margin-top: 12px;">
+        <li><strong>Narrative:</strong> Tell a story with characters, conflict, and resolution</li>
+        <li><strong>Persuasive:</strong> Argue a position with evidence and reasoning</li>
+        <li><strong>Informational:</strong> Explain a topic or process clearly</li>
+        <li><strong>Response to Text:</strong> Analyze and respond to reading</li>
+    </ul>
+</div>
+{% endblock %}
