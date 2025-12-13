@@ -214,123 +214,109 @@ function displayResults(results, studentResponse) {
     document.querySelector('.think-first-steps')?.closest('.card')?.remove();
     document.querySelector('.planning-questions')?.remove();
     document.querySelector('.success-criteria')?.remove();
+    // Also hide the structure tips card
+    const structureTipsCard = document.querySelector('.card[style*="fff9f0"]');
+    if (structureTipsCard) structureTipsCard.remove();
 
     const container = document.getElementById('results-container');
     container.style.display = 'block';
 
+    const evaluation = results.evaluation;
+    const levelColors = {
+        4: '#4caf50',
+        3: '#8bc34a',
+        2: '#ff9800',
+        1: '#f44336'
+    };
+    const levelLabels = {
+        4: 'Excellent',
+        3: 'Good',
+        2: 'Developing',
+        1: 'Needs Work'
+    };
+
     let html = `
-        <div class="card">
-            <h2>Writing Assessment Results</h2>
-            <h3>${results.prompt_title}</h3>
-            <p class="type">${results.prompt_type}</p>
+        <div class="card" style="background: linear-gradient(135deg, #1a5f7a 0%, #57837b 100%); color: white; text-align: center;">
+            <h2 style="color: white; margin-bottom: 8px;">Your Results</h2>
+            <div style="font-size: 3rem; font-weight: bold; margin: 16px 0;">Level ${evaluation.overall_level}</div>
+            <div style="font-size: 1.5rem; opacity: 0.9;">${evaluation.overall_percentage}%</div>
+            <div style="margin-top: 8px; font-size: 1.1rem;">${levelLabels[evaluation.overall_level]}</div>
         </div>
     `;
 
-    // Text metrics
+    // Overall feedback - what they did well
+    html += `
+        <div class="card" style="background: #e8f5e9; border-left: 4px solid #4caf50;">
+            <h3 style="color: #2e7d32; margin-top: 0;">What You Did Well</h3>
+            <p style="font-size: 1.05rem; line-height: 1.6;">${evaluation.overall_feedback}</p>
+        </div>
+    `;
+
+    // Top priority for improvement
+    html += `
+        <div class="card" style="background: #fff3e0; border-left: 4px solid #ff9800;">
+            <h3 style="color: #e65100; margin-top: 0;">Your Next Step</h3>
+            <p style="font-size: 1.05rem; line-height: 1.6;">${evaluation.top_priority}</p>
+        </div>
+    `;
+
+    // Category breakdown
+    html += `<div class="card"><h3>How You Did in Each Area</h3><div style="display: grid; gap: 16px; margin-top: 16px;">`;
+
+    const categoryNames = {
+        'main_message': 'Clear Main Message',
+        'logical_structure': 'Logical Flow',
+        'grouping': 'Well-Organized Ideas',
+        'conventions': 'Writing Quality'
+    };
+
+    for (const [key, cat] of Object.entries(evaluation.categories)) {
+        const color = levelColors[cat.level];
+        html += `
+            <div style="background: #f8f9fa; padding: 16px; border-radius: 8px; border-left: 4px solid ${color};">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <strong>${categoryNames[key] || key}</strong>
+                    <span style="background: ${color}; color: white; padding: 4px 12px; border-radius: 12px; font-size: 0.85rem;">
+                        Level ${cat.level}
+                    </span>
+                </div>
+                <p style="color: #2e7d32; margin: 8px 0; font-size: 0.95rem;"><strong>Strength:</strong> ${cat.strength}</p>
+                <p style="color: #666; margin: 0; font-size: 0.95rem;"><strong>To improve:</strong> ${cat.improvement}</p>
+            </div>
+        `;
+    }
+    html += '</div></div>';
+
+    // Text stats (simple)
+    const wordStatus = results.text_metrics.word_count >= results.text_metrics.word_minimum &&
+                       results.text_metrics.word_count <= results.text_metrics.word_maximum;
     html += `
         <div class="card">
-            <h3>Text Analysis</h3>
-            <div class="skill-breakdown">
-                <div class="skill-item">
-                    <h4>Word Count</h4>
-                    <div class="percentage">${results.text_metrics.word_count}</div>
-                    <p>Target: ${results.text_metrics.word_minimum}-${results.text_metrics.word_maximum}</p>
+            <h3>Writing Stats</h3>
+            <div style="display: flex; gap: 24px; flex-wrap: wrap;">
+                <div>
+                    <strong>Words:</strong> ${results.text_metrics.word_count}
+                    <span style="color: ${wordStatus ? '#4caf50' : '#ff9800'};">
+                        (target: ${results.text_metrics.word_minimum}-${results.text_metrics.word_maximum})
+                    </span>
                 </div>
-                <div class="skill-item">
-                    <h4>Sentences</h4>
-                    <div class="percentage">${results.text_metrics.sentence_count}</div>
-                </div>
-                <div class="skill-item">
-                    <h4>Paragraphs</h4>
-                    <div class="percentage">${results.text_metrics.paragraph_count}</div>
-                </div>
-                <div class="skill-item">
-                    <h4>Avg. Sentence Length</h4>
-                    <div class="percentage">${results.text_metrics.average_sentence_length}</div>
-                    <p>words</p>
-                </div>
+                <div><strong>Paragraphs:</strong> ${results.text_metrics.paragraph_count}</div>
+                <div><strong>Sentences:</strong> ${results.text_metrics.sentence_count}</div>
             </div>
         </div>
     `;
 
-    // Feedback
-    if (results.feedback_areas.length > 0) {
-        html += '<div class="card"><h3>Feedback</h3>';
-        for (const fb of results.feedback_areas) {
-            html += `
-                <div class="feedback-item needs-improvement">
-                    <strong>${fb.area}:</strong> ${fb.feedback}
-                </div>
-            `;
-        }
-        html += '</div>';
-    }
-
-    // Structure Check Questions
-    if (results.structure_check_questions) {
-        html += `
-            <div class="card" style="background-color: #f0f7fa; border-left: 4px solid #1a5f7a;">
-                <h3 style="color: #1a5f7a;">Check Your Structure</h3>
-                <p>Review your writing with these questions:</p>
-                <ul style="margin-left: 20px; margin-top: 12px;">
-        `;
-        for (const q of results.structure_check_questions) {
-            html += `<li>${q}</li>`;
-        }
-        html += '</ul></div>';
-    }
-
-    // Rubric
-    html += `
-        <div class="card">
-            <h3>Assessment Rubric</h3>
-            <p>Use this rubric for self-assessment or teacher evaluation:</p>
-            <table class="rubric-table">
-                <tr>
-                    <th>Category</th>
-                    <th>Weight</th>
-                    <th>Level 4</th>
-                    <th>Level 3</th>
-                    <th>Level 2</th>
-                    <th>Level 1</th>
-                </tr>
-    `;
-
-    for (const cat of results.rubric.categories) {
-        html += `
-            <tr>
-                <td><strong>${cat.name}</strong><br><small>${cat.description || ''}</small></td>
-                <td>${cat.weight}</td>
-                <td>${cat.levels['Level 4 (80-100%)']}</td>
-                <td>${cat.levels['Level 3 (70-79%)']}</td>
-                <td>${cat.levels['Level 2 (60-69%)']}</td>
-                <td>${cat.levels['Level 1 (50-59%)']}</td>
-            </tr>
-        `;
-    }
-    html += '</table></div>';
-
-    // Self-assessment
-    html += `
-        <div class="card">
-            <h3>Self-Assessment Checklist</h3>
-            <p>Review your writing against these questions:</p>
-            <ul style="margin-left: 20px; margin-top: 12px;">
-    `;
-    for (const q of results.self_assessment_questions) {
-        html += `<li>${q}</li>`;
-    }
-    html += '</ul></div>';
-
-    // Student's response
+    // Show their writing
     html += `
         <div class="card">
             <h3>Your Writing</h3>
-            <div class="passage-container">${studentResponse.replace(/\n/g, '<br>')}</div>
+            <div class="passage-container" style="background: #fafafa; padding: 16px; border-radius: 8px; line-height: 1.8;">
+                ${studentResponse.replace(/\n\n/g, '</p><p style="margin-top: 16px;">').replace(/\n/g, '<br>')}
+            </div>
         </div>
     `;
 
-    html += '<a href="/writing" class="btn btn-secondary">Try Another Prompt</a>';
+    html += '<a href="/writing" class="btn btn-primary">Try Another Prompt</a>';
 
     container.innerHTML = html;
     window.scrollTo(0, 0);

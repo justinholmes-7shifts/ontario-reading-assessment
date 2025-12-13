@@ -6,6 +6,7 @@ Embeds structured thinking principles to develop logical communication skills.
 """
 
 from app.curriculum import WRITING_EXPECTATIONS, WRITING_RUBRIC, ACHIEVEMENT_LEVELS
+from app.assessments.ai_evaluator import AIEvaluator
 
 
 # Think First Framework - guides students through structured planning
@@ -45,6 +46,7 @@ class WritingAssessment:
         self.prompts = self._load_prompts()
         self.rubric = WRITING_RUBRIC
         self.think_first = THINK_FIRST_FRAMEWORK
+        self.ai_evaluator = AIEvaluator()
 
     def _load_prompts(self):
         """Load writing prompts aligned with Ontario curriculum and structured thinking."""
@@ -375,14 +377,14 @@ Your essay should be 4-5 paragraphs in length.
 
     def evaluate_writing(self, prompt_id, response_text):
         """
-        Provide writing assessment framework with structured thinking analysis.
+        Evaluate student writing using AI assessment.
 
         Args:
             prompt_id: ID of the writing prompt
             response_text: Student's written response
 
         Returns:
-            Assessment framework with rubric, metrics, and structure feedback
+            Assessment with scores, feedback, and improvement suggestions
         """
         prompt = self.prompts.get(prompt_id)
         if not prompt:
@@ -396,10 +398,16 @@ Your essay should be 4-5 paragraphs in length.
         paragraphs = response_text.split('\n\n')
         paragraph_count = len([p for p in paragraphs if p.strip()])
 
-        # Check word count requirements
-        meets_minimum = word_count >= prompt["word_minimum"]
-        exceeds_maximum = word_count > prompt["word_maximum"]
+        # Get AI evaluation
+        prompt_info = {
+            "title": prompt["title"],
+            "type": prompt["type"],
+            "word_minimum": prompt["word_minimum"],
+            "word_maximum": prompt["word_maximum"]
+        }
+        ai_evaluation = self.ai_evaluator.evaluate_writing(response_text, prompt_info)
 
+        # Build results
         results = {
             "prompt_id": prompt_id,
             "prompt_title": prompt["title"],
@@ -408,62 +416,12 @@ Your essay should be 4-5 paragraphs in length.
                 "word_count": word_count,
                 "sentence_count": sentence_count,
                 "paragraph_count": paragraph_count,
-                "average_sentence_length": round(word_count / max(sentence_count, 1), 1),
-                "meets_word_minimum": meets_minimum,
-                "exceeds_word_maximum": exceeds_maximum,
                 "word_minimum": prompt["word_minimum"],
                 "word_maximum": prompt["word_maximum"]
             },
-            "rubric": self._get_rubric_for_type(prompt["type"]),
-            "success_criteria": prompt["success_criteria"],
-            "structure_tips": prompt.get("structure_tips", []),
-            "self_assessment_questions": self._get_self_assessment_questions(prompt["type"]),
-            "structure_check_questions": self._get_structure_check_questions(),
-            "feedback_areas": []
+            "evaluation": ai_evaluation,
+            "ai_powered": self.ai_evaluator.is_available()
         }
-
-        # Generate feedback based on metrics
-        if not meets_minimum:
-            results["feedback_areas"].append({
-                "area": "Length",
-                "feedback": f"Your response has {word_count} words. "
-                           f"Try to expand your writing to at least {prompt['word_minimum']} words."
-            })
-
-        if exceeds_maximum:
-            results["feedback_areas"].append({
-                "area": "Length",
-                "feedback": f"Your response has {word_count} words. "
-                           f"Consider editing to stay within {prompt['word_maximum']} words."
-            })
-
-        if paragraph_count < 3:
-            results["feedback_areas"].append({
-                "area": "Organization",
-                "feedback": "Your writing could benefit from more paragraphs. "
-                           "Each main point should have its own paragraph."
-            })
-
-        # Structure-based feedback
-        results["feedback_areas"].append({
-            "area": "Structure Check",
-            "feedback": "Review: Does your opening state your main point clearly? "
-                       "Does each paragraph support that main point in a different way?"
-        })
-
-        avg_sentence = results["text_metrics"]["average_sentence_length"]
-        if avg_sentence > 25:
-            results["feedback_areas"].append({
-                "area": "Clarity",
-                "feedback": "Your sentences are quite long. Shorter sentences are often "
-                           "clearer and easier for readers to follow."
-            })
-        elif avg_sentence < 10:
-            results["feedback_areas"].append({
-                "area": "Flow",
-                "feedback": "Your sentences are quite short. Consider combining some "
-                           "related ideas for better flow."
-            })
 
         return results
 
